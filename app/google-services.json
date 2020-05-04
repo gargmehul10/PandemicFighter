@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1049709998245",
+    "firebase_url": "https://pandemicfighter-e2d3b.firebaseio.com",
+    "project_id": "pandemicfighter-e2d3b",
+    "storage_bucket": "pandemicfighter-e2d3b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049709998245:android:c88ba877eb0270cfe3dd4c",
+        "android_client_info": {
+          "package_name": "com.mehul.pandemicfighter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049709998245-ka56q7etnjji9pi3h3bp8a1hjepmho5j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mehul.pandemicfighter",
+            "certificate_hash": "fff558992b5adb7e78479a2aa6f25f0ffb59cf76"
+          }
+        },
+        {
+          "client_id": "1049709998245-bhfisv9ce1bs7enuk2p57fbjrukipfj9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX6-cA7uX4zZk0OvBUMZ7iOKWPldr-Pq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049709998245-bhfisv9ce1bs7enuk2p57fbjrukipfj9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

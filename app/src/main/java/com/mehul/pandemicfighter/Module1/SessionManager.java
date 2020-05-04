@@ -1,0 +1,49 @@
+package com.mehul.pandemicfighter.Module1;
+
+import java.util.HashMap;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+
+public class SessionManager {
+
+    SharedPreferences pref;
+    Editor editor;
+    Context _context;
+    int PRIVATE_MODE = 0;
+
+    private static final String PREF_NAME = "Details";
+    private static final String UNIQ_ID = "Aadhar";
+    private  static final String STATE ="state";
+    private  static final String DISTRICT = "district";
+    private static final  String ROLE = "role";
+
+    public SessionManager(Context context){
+        this._context = context;
+        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        editor = pref.edit();
+    }
+
+    public void createLoginSession(String id, String role, String state, String dis){
+        editor.putString(UNIQ_ID, id);
+        editor.putString(ROLE, role);
+        editor.putString(STATE, state);
+        editor.putString(DISTRICT,dis);
+        editor.commit();
+    }
+
+    public HashMap<String, String> getUserDetails() {
+        HashMap<String, String> user = new HashMap<String, String>();
+        user.put(UNIQ_ID, pref.getString(UNIQ_ID, "Not Found"));
+        user.put(ROLE,pref.getString(ROLE,"Not Found"));
+        user.put(STATE,pref.getString(STATE,"Not Found"));
+        user.put(DISTRICT,pref.getString(DISTRICT,"Not Found"));
+        return user;
+    }
+
+    public void logoutUser(){
+
+        editor.clear();
+        editor.commit();
+    }
+}
