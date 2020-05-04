@@ -7,7 +7,8 @@
     android:orientation="vertical"
     android:padding="35dp"
     android:background="@color/colorBackground"
-    tools:context=".LoginActivity">
+    tools:context=".Module1.LoginActivity">
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -37,61 +38,40 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="EMAIL"
+            android:hint="Aadhar Number"
             android:ems="10"
-            android:id="@+id/editTextEmail"
+            android:id="@+id/editTextAadhar"
             android:textSize="20sp"
             android:inputType="text"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusableInTouchMode="true"
-        android:focusable="true"
-        >
-        <EditText
+        <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="PASSWORD"
-            android:ems="10"
-            android:id="@+id/editTextPassword"
-            android:textSize="20sp"
-            android:inputType="text"
+            android:entries="@array/types"
+            android:id="@+id/typesLogin"
             />
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+    <AutoCompleteTextView
+        android:id="@+id/stateInp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:hint="State"
+        />
 
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/radioGP1">
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Retailer"
-                android:layout_weight="1"
-                android:textSize="20sp"/>
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="NGO"
-                android:layout_weight="1"
-                android:textSize="20sp"/>
-        </RadioGroup>
-    </LinearLayout>
+    <AutoCompleteTextView
+        android:id="@+id/districtInp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="District"
+        />
 
     <Button
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:id="@+id/login"
         android:text="LOGIN"
         android:textSize="20sp"
         android:onClick="SignInButton"
@@ -125,20 +105,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_up_retailer"
-            android:textSize="20dp"
+            android:text="@string/sign_up"
+            android:textSize="20sp"
             android:clickable="true"
-            android:onClick="SignUpTextRetailer"
-            android:textColor="@color/colorPrimaryDark" />
+            android:onClick="SignupUser"
+            android:textColor="@color/colorPrimaryDark"
+            android:focusable="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="@string/sign_up_ngo"
-            android:textSize="20dp"
-            android:clickable="true"
-            android:onClick="SignUpTextNGO"
-            android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 </LinearLayout>

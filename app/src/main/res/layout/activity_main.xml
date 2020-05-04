@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="#FFFFFF"
-    tools:context=".MainActivity">
+    tools:context=".Module1.MainActivity">
+
 
     <ImageView
     android:layout_width="wrap_content"

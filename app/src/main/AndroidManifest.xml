@@ -2,32 +2,54 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mehul.pandemicfighter">
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
     <uses-permission-sdk-23 android:name="android.permission.CAMERA" />
     <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
-        tools:replace="android:icon"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".MainActivity" android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+        <activity android:name=".Module2.UploadActivity"></activity>
+        <activity android:name=".Module2.MapsMarkShop" />
+        <activity android:name=".Module2.ConsumerActivity" />
+        <activity android:name=".Module2.RetailerActivity" />
+        <activity android:name=".Module1.ScanDetails" />
+        <activity
+            android:name=".Module1.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".SignupActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".Retailer" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Module1.LoginActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".Module1.UserRegisterActivity"
+            android:screenOrientation="fullSensor" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAuouOTxwDbPb-wkAyELtEBeic2v1GvZPs" />
     </application>
 
 </manifest>

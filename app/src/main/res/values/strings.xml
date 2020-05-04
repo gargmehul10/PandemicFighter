@@ -14,10 +14,10 @@
     <string name="user_location_permission_explanation">This app needs location permissions to show its functionality.</string>
     <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
     <string name="title_activity_driver_register">Map</string>
+    <string name="sign_up">Sign Up</string>
     <string-array name="types">
-        <item>Mess</item>
-        <item>Marriage</item>
-        <item>Hotel</item>
-        <item>Other</item>
+        <item>Retailer</item>
+        <item>NGO</item>
+        <item>Consumer</item>
     </string-array>
 </resources>

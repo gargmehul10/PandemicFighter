@@ -1,4 +1,4 @@
-package com.mehul.pandemicfighter;
+package com.mehul.pandemicfighter.Module1;
 
 import java.util.HashMap;
 import android.content.Context;
@@ -13,7 +13,9 @@ public class SessionManager {
     int PRIVATE_MODE = 0;
 
     private static final String PREF_NAME = "Details";
-    private static final String UNIQ_ID = "emailID";
+    private static final String UNIQ_ID = "Aadhar";
+    private  static final String STATE ="state";
+    private  static final String DISTRICT = "district";
     private static final  String ROLE = "role";
 
     public SessionManager(Context context){
@@ -22,9 +24,11 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void createLoginSession(String id, String role){
+    public void createLoginSession(String id, String role, String state, String dis){
         editor.putString(UNIQ_ID, id);
         editor.putString(ROLE, role);
+        editor.putString(STATE, state);
+        editor.putString(DISTRICT,dis);
         editor.commit();
     }
 
@@ -32,6 +36,8 @@ public class SessionManager {
         HashMap<String, String> user = new HashMap<String, String>();
         user.put(UNIQ_ID, pref.getString(UNIQ_ID, "Not Found"));
         user.put(ROLE,pref.getString(ROLE,"Not Found"));
+        user.put(STATE,pref.getString(STATE,"Not Found"));
+        user.put(DISTRICT,pref.getString(DISTRICT,"Not Found"));
         return user;
     }
 
