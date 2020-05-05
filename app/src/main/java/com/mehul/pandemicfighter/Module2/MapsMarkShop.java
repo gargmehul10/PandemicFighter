@@ -56,6 +56,7 @@ import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
 import com.mehul.pandemicfighter.Module1.SessionManager;
 import com.mehul.pandemicfighter.Module3.Shop;
+import com.mehul.pandemicfighter.Module3.TimeSlot;
 import com.mehul.pandemicfighter.R;
 
 import java.util.HashMap;
@@ -139,6 +140,11 @@ public class MapsMarkShop extends FragmentActivity implements OnMapReadyCallback
         HashMap<String, String> details = sm.getUserDetails();
         myRef = FirebaseDatabase.getInstance().getReference("Users").child(details.get("state")).child(details.get("district")).child(details.get("Aadhar"));
         myRef.child("ShopDetails").setValue(shop);
+
+        // creating a slots node when marker is confirmed
+        TimeSlot timeSlot = new TimeSlot(0, 0, 0, 0);
+        myRef.child("Slots").setValue(timeSlot);
+
         Toast.makeText(MapsMarkShop.this, "Shop Registered!", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MapsMarkShop.this,RetailerActivity.class));
     }
