@@ -40,6 +40,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Module2.ChooseSlotsActivity">
+        </activity>
         <activity
             android:name=".Module1.LoginActivity"
             android:screenOrientation="fullSensor" />

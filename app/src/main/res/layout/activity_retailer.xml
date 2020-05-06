@@ -30,21 +30,26 @@
             android:layout_height="match_parent"
             android:id="@+id/swiperefresh">
 
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:id="@+id/slot_list" >
+            </androidx.recyclerview.widget.RecyclerView>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:clickable="true"
-            android:src="@android:drawable/ic_input_add"
-            android:tint="#FFFFFF"
-            android:backgroundTint="@color/colorPrimary" />
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/fab"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom|right"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:clickable="true"-->
+<!--            android:src="@android:drawable/ic_input_add"-->
+<!--            android:tint="#FFFFFF"-->
+<!--            android:backgroundTint="@color/colorPrimary" />-->
 
     </FrameLayout>
 </RelativeLayout>

@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mehul.pandemicfighter.Module2.ConsumerActivity;
 import com.mehul.pandemicfighter.Module2.RetailerActivity;
 import com.mehul.pandemicfighter.R;
 
@@ -90,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
                         startActivity(new Intent(LoginActivity.this, RetailerActivity.class));
                     }
                     else if(role.equals("consumer")){
-                        startActivity(new Intent(LoginActivity.this, RetailerActivity.class));
+                        startActivity(new Intent(LoginActivity.this, ConsumerActivity.class));
                     }
                 }
                 else{
