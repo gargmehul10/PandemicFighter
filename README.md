@@ -5,7 +5,7 @@
 - [Mehul Garg](https://github.com/gargmehul10)
 - [Kartik Mahendru](https://github.com/kartikMahendru)
 - [Kartik Verma](https://github.com/dukkibaba2p0)
-- [Dhruv Kapoor]
+- [Dhruv Kapoor](https://github.com/dhruvk98)
 
 ## Project Details
 - College : MNNIT Allahabad
