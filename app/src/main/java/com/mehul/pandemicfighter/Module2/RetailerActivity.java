@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,17 +74,25 @@ public class RetailerActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TimeSlot timeSlot = dataSnapshot.getValue(TimeSlot.class);
+                if(timeSlot != null){
+                    list_count.add(timeSlot.getSlot1());
+                    list_count.add(timeSlot.getSlot2());
+                    list_count.add(timeSlot.getSlot3());
+                    list_count.add(timeSlot.getSlot4());
 
-                list_count.add(timeSlot.getSlot1());
-                list_count.add(timeSlot.getSlot2());
-                list_count.add(timeSlot.getSlot3());
-                list_count.add(timeSlot.getSlot4());
-
-                mAdapter=new TimeSlotAdapter(getApplicationContext(),list_count, list_timeSlot, RetailerActivity.this);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                mRecyclerView.setAdapter(mAdapter);
-                mAdapter.notifyDataSetChanged();
+                    mAdapter=new TimeSlotAdapter(getApplicationContext(),list_count, list_timeSlot, RetailerActivity.this);
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    mRecyclerView.setAdapter(mAdapter);
+                    mAdapter.notifyDataSetChanged();
+                    spinner.setVisibility(View.GONE);
+                }
+                else{
+                    Toast.makeText(RetailerActivity.this, "No slots at current time!",Toast.LENGTH_LONG).show();
+                    spinner.setVisibility(View.GONE);
+                }
                 spinner.setVisibility(View.GONE);
+
+
             }
 
             @Override

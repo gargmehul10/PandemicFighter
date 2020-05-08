@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mehul.pandemicfighter">
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -26,7 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".Module2.UploadActivity"></activity>
+        <activity android:name=".Module2.ngoActivity"></activity>
+        <activity android:name=".Module2.UploadActivity" />
         <activity android:name=".Module2.MapsMarkShop" />
         <activity android:name=".Module2.ConsumerActivity" />
         <activity android:name=".Module2.RetailerActivity" />
@@ -40,8 +42,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Module2.ChooseSlotsActivity">
-        </activity>
+        <activity android:name=".Module2.ChooseSlotsActivity"></activity>
         <activity
             android:name=".Module1.LoginActivity"
             android:screenOrientation="fullSensor" />

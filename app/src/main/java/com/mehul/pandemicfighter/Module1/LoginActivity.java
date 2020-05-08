@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mehul.pandemicfighter.Module2.ConsumerActivity;
 import com.mehul.pandemicfighter.Module2.RetailerActivity;
+import com.mehul.pandemicfighter.Module2.ngoActivity;
 import com.mehul.pandemicfighter.R;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -92,6 +93,9 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
                     }
                     else if(role.equals("consumer")){
                         startActivity(new Intent(LoginActivity.this, ConsumerActivity.class));
+                    }
+                    else{
+                        startActivity(new Intent(LoginActivity.this, ngoActivity.class));
                     }
                 }
                 else{
