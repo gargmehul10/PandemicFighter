@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.mehul.pandemicfighter.Module2.ConsumerActivity;
 import com.mehul.pandemicfighter.Module2.RetailerActivity;
+import com.mehul.pandemicfighter.Module2.ngoActivity;
 import com.mehul.pandemicfighter.R;
 
 import java.util.HashMap;
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(details.get("role").equals("consumer")){
                         startActivity(new Intent(MainActivity.this, ConsumerActivity.class));
+                    }
+                    else{
+                        startActivity(new Intent(MainActivity.this, ngoActivity.class));
                     }
                 }
             }

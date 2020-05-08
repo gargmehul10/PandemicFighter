@@ -1,6 +1,7 @@
 package com.mehul.pandemicfighter.Module2;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -12,8 +13,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mehul.pandemicfighter.Module1.SessionManager;
 import com.mehul.pandemicfighter.Module3.TimeSlot;
 import com.mehul.pandemicfighter.R;
+
+import java.util.HashMap;
 
 public class ChooseSlotsActivity extends Activity {
     private RadioGroup radioGroup;
@@ -34,9 +38,11 @@ public class ChooseSlotsActivity extends Activity {
         okButton = findViewById(R.id.button);
 
         // fetching details from the current shop
-        String uid="";
-        String state="";
-        String district="";
+        SessionManager sessionManager = new SessionManager(getApplicationContext());
+        HashMap<String, String> details = sessionManager.getUserDetails();
+        String uid= getIntent().getStringExtra("UID");
+        String state= details.get("state");
+        String district= details.get("district");
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(state).child(district).child(uid);
         databaseReference.child("Slots").addValueEventListener(new ValueEventListener() {

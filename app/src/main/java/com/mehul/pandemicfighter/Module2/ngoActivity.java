@@ -88,7 +88,7 @@ import static com.mapbox.core.constants.Constants.PRECISION_6;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
-public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener, ProblemActivity.ExampleDialogListener{
+public class ngoActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener{
 
     private static final String FIRST = "first";
     private static final String ANY = "any";
@@ -103,7 +103,7 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
 
     private PermissionsManager permissionsManager;
     private String mobNo;
-    private DatabaseReference myRef,shopRef,shopPickedRef;
+    private DatabaseReference myRef,problemPoints,shopPickedRef;
     private LatLng usrStart;
     private double usrRange;
     private User usr;
@@ -126,9 +126,9 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
         navigation = new MapboxNavigation(getApplicationContext(), getString(R.string.access_token));
 
         // This contains the MapView in XML and needs to be called after the access token is configured.
-        setContentView(R.layout.activity_consumer);
+        setContentView(R.layout.activity_ngo);
 
-        iconFactory = IconFactory.getInstance(ConsumerActivity.this);
+        iconFactory = IconFactory.getInstance(ngoActivity.this);
         icon = iconFactory.fromResource(R.drawable.map_marker_dark);
 
         //mobNo=getIntent().getStringExtra("MOB_NUMBER");
@@ -140,8 +140,8 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
         district = details.get("district");
         myRef= FirebaseDatabase.getInstance().getReference("Users").child(state).child(district).child(aadharNumber);
         shopPickedRef=FirebaseDatabase.getInstance().getReference("shop-picked");
-        shopRef= FirebaseDatabase.getInstance().getReference("Users").child(state).child(district);
-        // Toast.makeText(ConsumerActivity.this, "references are made ",Toast.LENGTH_SHORT).show();
+        problemPoints= FirebaseDatabase.getInstance().getReference("Users").child(state).child(district).child("Problems");
+        // Toast.makeText(ngoActivity.this, "references are made ",Toast.LENGTH_SHORT).show();
         mapView = findViewById(R.id.mapView);
         // to get Driver's start point and other data
         myRef.addValueEventListener(new ValueEventListener() {
@@ -154,7 +154,7 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
                     usrStart = new LatLng(usr.getLocLatitude(), usr.getLocLongitude());
                     usrRange = usr.getRange()*1000.0;
                     mapView.onCreate(savedInstanceState);
-                    mapView.getMapAsync(ConsumerActivity.this);
+                    mapView.getMapAsync(ngoActivity.this);
                 }catch(Exception e) {
                     Toast.makeText(getApplicationContext(),"User data is corrupt!",Toast.LENGTH_LONG).show();
                 }
@@ -178,15 +178,15 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
 
             enableLocationComponent(style);
             initOptimizedRouteLineLayer(style);
-            // Toast.makeText(ConsumerActivity.this, "shoe shop point called ",Toast.LENGTH_SHORT).show();
+            // Toast.makeText(ngoActivity.this, "shoe shop point called ",Toast.LENGTH_SHORT).show();
             showShopPoints();
-            // Toast.makeText(ConsumerActivity.this, "show shop point call backed ",Toast.LENGTH_SHORT).show();
+            // Toast.makeText(ngoActivity.this, "show shop point call backed ",Toast.LENGTH_SHORT).show();
             mapboxMap.setOnInfoWindowClickListener(marker -> {
                 if(marker.getTitle().substring(marker.getTitle().indexOf(' ')+1).equals("shop Here"));
                 {
                     String UIDRetailer = marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")+1);
-                    Toast.makeText(ConsumerActivity.this, UIDRetailer,Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(ConsumerActivity.this, ChooseSlotsActivity.class);
+                    Toast.makeText(ngoActivity.this, UIDRetailer,Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(ngoActivity.this, ChooseSlotsActivity.class);
                     i.putExtra("UID", UIDRetailer);
                     startActivity(i);
                 }
@@ -232,7 +232,7 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
                 return true;
 //                clearTable();
 //                saveTable();
-//                Intent intent=new Intent(ConsumerActivity.this,MainActivity.class);
+//                Intent intent=new Intent(ngoActivity.this,MainActivity.class);
 //                startActivity(intent);
 //                finish();
             case R.id.action_settings:
@@ -245,7 +245,7 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     private void showShopPoints() {
-        shopRef.addValueEventListener(new ValueEventListener() {
+        problemPoints.addValueEventListener(new ValueEventListener() {
             @SuppressLint("LogNotTimber")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -254,41 +254,39 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
                 addFirstStopToStopsList();
                 mapboxMap.clear();
 
-                Log.e("TAG","GB count "+dataSnapshot.getChildrenCount());
-                for(DataSnapshot postSnapshot:dataSnapshot.getChildren()) {
-                    if(postSnapshot.child("ShopDetails").exists()){
-                        Shop post=postSnapshot.child("ShopDetails").getValue(Shop.class);
-                        String key = postSnapshot.getKey();
-                        LatLng shopLatLng=new LatLng(post.getLocationLatitude(),post.getLocationLongitude());
-                        if(shopLatLng.distanceTo(usrStart)<=usrRange) {
-                            Log.e("TAG","In range "+postSnapshot.getKey());
+                Log.e("TAG", "GB count " + dataSnapshot.getChildrenCount());
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
-                            // Optimization API is limited to 12 coordinate sets
-                            if (alreadyTwelveMarkersOnMap()) {
-                                Toast.makeText(ConsumerActivity.this, "Only 12 steps allowed", Toast.LENGTH_LONG).show();
-                            } else {
-                                Style style = mapboxMap.getStyle();
-                                if (style != null) {
-                                    mapboxMap.addMarker(new MarkerOptions()
-                                            .position(shopLatLng)
-                                            .title("Shop Name : "+post.getShopName())
-                                            .snippet("\n"+"OwnerName : "+ post.getOwnerName() + "\n UID : "+ key))
-                                            .setIcon(icon);
-                                    stops.add(Point.fromLngLat(shopLatLng.getLongitude(), shopLatLng.getLatitude()));
-                                    if(stops.size()>=2) {
-                                        getOptimizedRoute(style, stops);
-                                    }
+                    Problem post = postSnapshot.getValue(Problem.class);
+                    String key = postSnapshot.getKey();
+                    LatLng shopLatLng = new LatLng(post.getLat(), post.getLng());
+                    if (shopLatLng.distanceTo(usrStart) <= usrRange) {
+                        Log.e("TAG", "In range " + postSnapshot.getKey());
+
+                        // Optimization API is limited to 12 coordinate sets
+                        if (alreadyTwelveMarkersOnMap()) {
+                            Toast.makeText(ngoActivity.this, "Only 12 steps allowed", Toast.LENGTH_LONG).show();
+                        } else {
+                            Style style = mapboxMap.getStyle();
+                            if (style != null) {
+                                mapboxMap.addMarker(new MarkerOptions()
+                                        .position(shopLatLng)
+                                        .title("Contact : " +post.getContact())
+                                        .snippet("\n" + "Description : " + post.getDescription() + "\n Posted on : " + post.getTimestamp()))
+                                        .setIcon(icon);
+                                stops.add(Point.fromLngLat(shopLatLng.getLongitude(), shopLatLng.getLatitude()));
+                                if (stops.size() >= 2) {
+                                    getOptimizedRoute(style, stops);
                                 }
                             }
                         }
-                        else
-                            Log.e("TAG","Not in range "+postSnapshot.getKey());
-                    }
-
-                    //Log.e("TAG","In range "+post.getDescription()+ " "+post.getSuffFor()+" "+post.getUrl()+" "+post.getLatitude()+" "+post.getLongitude());
-
-
+                    } else
+                        Log.e("TAG", "Not in range " + postSnapshot.getKey());
                 }
+
+                //Log.e("TAG","In range "+post.getDescription()+ " "+post.getSuffFor()+" "+post.getUrl()+" "+post.getLatitude()+" "+post.getLongitude());
+
+
             }
 
             @Override
@@ -370,14 +368,14 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
             public void onResponse(@NotNull Call<OptimizationResponse> call, @NotNull Response<OptimizationResponse> response) {
                 if (!response.isSuccessful()) {
                     Log.e("NSP","NO SUCCESS");
-                    Toast.makeText(ConsumerActivity.this, "NO SUCCESS", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ngoActivity.this, "NO SUCCESS", Toast.LENGTH_SHORT).show();
                 } else {
                     if (response.body() != null) {
                         List<DirectionsRoute> routes = response.body().trips();
                         if (routes != null) {
                             if (routes.isEmpty()) {
                                 Log.e("NSP","%s size = %s SUCCESSFUL BUT NO ROUTES "+routes.size());
-                                Toast.makeText(ConsumerActivity.this, "SUCCESSFUL BUT NO ROUTES",
+                                Toast.makeText(ngoActivity.this, "SUCCESSFUL BUT NO ROUTES",
                                         Toast.LENGTH_SHORT).show();
                             } else {
                                 // Get most optimized route from API response
@@ -396,12 +394,12 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
                             }
                         } else {
                             Log.e("NSP","list of routes in the response is null");
-                            Toast.makeText(ConsumerActivity.this, String.format("NULL RESPONSE",
+                            Toast.makeText(ngoActivity.this, String.format("NULL RESPONSE",
                                     "The Optimization API response's list of routes"), Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Log.e("NSP","response.body() is null");
-                        Toast.makeText(ConsumerActivity.this, String.format("NULL RESPONSE",
+                        Toast.makeText(ngoActivity.this, String.format("NULL RESPONSE",
                                 "The Optimization API response's body"), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -540,12 +538,12 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
         alertDialog.setView(msg);
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, " YES ", (dialogInterface, i) -> {
-            ProgressDialog pd=new ProgressDialog(ConsumerActivity.this);  // To show progress dialog
+            ProgressDialog pd=new ProgressDialog(ngoActivity.this);  // To show progress dialog
             pd.setMessage("Picking...");
             pd.setCancelable(false);
             pd.show();
             String key1=marker1.getSnippet().substring(marker1.getSnippet().lastIndexOf(':')+2);
-            shopRef.child(key1).addListenerForSingleValueEvent(new ValueEventListener() {
+            problemPoints.child(key1).addListenerForSingleValueEvent(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -560,13 +558,13 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                             if(dataSnapshot1.child(usedate).exists()) {
                                 shopPickedRef.child(usedate).setValue(dataSnapshot1.child(usedate).getValue(Integer.class)+1);
-                                shopRef.child(key1).setValue(null);
+                                problemPoints.child(key1).setValue(null);
                                 showShopPoints();
                                 pd.cancel();
                             } else {
                                 shopPickedRef.child(usedate).setValue(1);
-                                shopRef.child(key1).setValue(null);
-                                shopRef.child(key1).setValue(null);
+                                problemPoints.child(key1).setValue(null);
+                                problemPoints.child(key1).setValue(null);
                                 showShopPoints();
                                 pd.cancel();
                             }
@@ -664,21 +662,6 @@ public class ConsumerActivity extends AppCompatActivity implements OnMapReadyCal
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString("User","no");
         editor.apply();
-    }
-
-    public void HelpButton(View view) {
-        ProblemActivity exampleDialog = new ProblemActivity();
-        exampleDialog.show(getSupportFragmentManager(), "example dialog");
-    }
-
-    @Override
-    public void applyTexts(String name1, String name2) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(state).child(district).child("Problems");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        String format = simpleDateFormat.format(new Date());
-        Problem pb = new Problem(name1,name2,aadharNumber, usrStart.getLatitude(), usrStart.getLongitude(),format);
-        String key = ref.push().getKey();
-        ref.child(key).setValue(pb);
     }
 }
 
