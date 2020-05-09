@@ -62,6 +62,7 @@ public class RetailerActivity extends AppCompatActivity {
         mRecyclerView=findViewById(R.id.slot_list);
         final ArrayList<Integer> list_count= new ArrayList<>();
         final ArrayList<String> list_timeSlot= new ArrayList<>();
+        final ArrayList<String> list_uidDetails = new ArrayList<>();
 
         spinner.setVisibility(View.VISIBLE);
 
@@ -80,7 +81,12 @@ public class RetailerActivity extends AppCompatActivity {
                     list_count.add(timeSlot.getSlot3());
                     list_count.add(timeSlot.getSlot4());
 
-                    mAdapter=new TimeSlotAdapter(getApplicationContext(),list_count, list_timeSlot, RetailerActivity.this);
+                    list_uidDetails.add(timeSlot.getSlot1UID());
+                    list_uidDetails.add(timeSlot.getSlot2UID());
+                    list_uidDetails.add(timeSlot.getSlot3UID());
+                    list_uidDetails.add(timeSlot.getSlot4UID());
+
+                    mAdapter=new TimeSlotAdapter(getApplicationContext(),list_count, list_timeSlot, RetailerActivity.this, list_uidDetails);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     mRecyclerView.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
@@ -91,8 +97,6 @@ public class RetailerActivity extends AppCompatActivity {
                     spinner.setVisibility(View.GONE);
                 }
                 spinner.setVisibility(View.GONE);
-
-
             }
 
             @Override
@@ -159,6 +163,7 @@ public class RetailerActivity extends AppCompatActivity {
         mRecyclerView=findViewById(R.id.slot_list);
         final ArrayList<Integer> list_count= new ArrayList<>();
         final ArrayList<String> list_timeSlot= new ArrayList<>();
+        final ArrayList<String> list_uidDetails = new ArrayList<>();
 
         spinner.setVisibility(View.VISIBLE);
 
@@ -167,7 +172,10 @@ public class RetailerActivity extends AppCompatActivity {
         list_timeSlot.add("10:00 - 11:00");
         list_timeSlot.add("11:00 - 12:00");
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        SessionManager sm = new SessionManager(getApplicationContext());
+        HashMap<String, String> details = sm.getUserDetails();
+        DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("Users").child(details.get("state")).child(details.get("district")).child(details.get("Aadhar"));
+        myRef1.child("Slots").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TimeSlot timeSlot = dataSnapshot.getValue(TimeSlot.class);
@@ -177,7 +185,12 @@ public class RetailerActivity extends AppCompatActivity {
                 list_count.add(timeSlot.getSlot3());
                 list_count.add(timeSlot.getSlot4());
 
-                mAdapter=new TimeSlotAdapter(getApplicationContext(),list_count, list_timeSlot, RetailerActivity.this);
+                list_uidDetails.add(timeSlot.getSlot1UID());
+                list_uidDetails.add(timeSlot.getSlot2UID());
+                list_uidDetails.add(timeSlot.getSlot3UID());
+                list_uidDetails.add(timeSlot.getSlot4UID());
+
+                mAdapter=new TimeSlotAdapter(getApplicationContext(),list_count, list_timeSlot, RetailerActivity.this, list_uidDetails);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
