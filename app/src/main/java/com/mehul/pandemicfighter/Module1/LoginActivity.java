@@ -90,12 +90,15 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
                     sessionManager.createLoginSession(number, role, state, dis);
                     if(role.equals("retailer")){
                         startActivity(new Intent(LoginActivity.this, RetailerActivity.class));
+                        finish();
                     }
                     else if(role.equals("consumer")){
                         startActivity(new Intent(LoginActivity.this, ConsumerActivity.class));
+                        finish();
                     }
                     else{
                         startActivity(new Intent(LoginActivity.this, ngoActivity.class));
+                        finish();
                     }
                 }
                 else{

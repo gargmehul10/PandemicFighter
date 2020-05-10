@@ -38,13 +38,19 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     //redirect
                     if(details.get("role").equals("retailer")){
-                        startActivity(new Intent(MainActivity.this, RetailerActivity.class));
+                        Intent mainIntent = new Intent(MainActivity.this, RetailerActivity.class);
+                        MainActivity.this.startActivity(mainIntent);
+                        MainActivity.this.finish();
                     }
                     else if(details.get("role").equals("consumer")){
-                        startActivity(new Intent(MainActivity.this, ConsumerActivity.class));
+                        Intent mainIntent = new Intent(MainActivity.this, ConsumerActivity.class);
+                        MainActivity.this.startActivity(mainIntent);
+                        MainActivity.this.finish();
                     }
                     else{
-                        startActivity(new Intent(MainActivity.this, ngoActivity.class));
+                        Intent mainIntent = new Intent(MainActivity.this, ngoActivity.class);
+                        MainActivity.this.startActivity(mainIntent);
+                        MainActivity.this.finish();
                     }
                 }
             }

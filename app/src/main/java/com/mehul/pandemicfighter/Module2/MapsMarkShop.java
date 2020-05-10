@@ -142,8 +142,8 @@ public class MapsMarkShop extends FragmentActivity implements OnMapReadyCallback
         myRef.child("ShopDetails").setValue(shop);
 
         // creating a slots node when marker is confirmed
-        TimeSlot timeSlot = new TimeSlot(0, 0, 0, 0);
-        myRef.child("Slots").setValue(timeSlot);
+         TimeSlot timeSlot = new TimeSlot(0, 0, 0, 0, "", "", "", "");
+         myRef.child("Slots").setValue(timeSlot);
 
         Toast.makeText(MapsMarkShop.this, "Shop Registered!", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MapsMarkShop.this,RetailerActivity.class));

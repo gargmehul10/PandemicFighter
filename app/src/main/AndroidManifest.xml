@@ -33,6 +33,7 @@
         <activity android:name=".Module2.ConsumerActivity" />
         <activity android:name=".Module2.RetailerActivity" />
         <activity android:name=".Module1.ScanDetails" />
+        <activity android:name=".Module2.UidDetailsActivity" />
         <activity
             android:name=".Module1.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

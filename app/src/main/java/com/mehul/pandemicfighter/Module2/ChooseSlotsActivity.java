@@ -16,7 +16,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.mehul.pandemicfighter.Module1.SessionManager;
 import com.mehul.pandemicfighter.Module3.TimeSlot;
 import com.mehul.pandemicfighter.R;
-
 import java.util.HashMap;
 
 public class ChooseSlotsActivity extends Activity {
@@ -40,11 +39,12 @@ public class ChooseSlotsActivity extends Activity {
         // fetching details from the current shop
         SessionManager sessionManager = new SessionManager(getApplicationContext());
         HashMap<String, String> details = sessionManager.getUserDetails();
-        String uid= getIntent().getStringExtra("UID");
-        String state= details.get("state");
-        String district= details.get("district");
+        String uid_retailer = getIntent().getStringExtra("UID");
+        String uid = details.get("Aadhar");
+        String state = details.get("state");
+        String district = details.get("district");
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(state).child(district).child(uid);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(state).child(district).child(uid_retailer);
         databaseReference.child("Slots").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -72,7 +72,7 @@ public class ChooseSlotsActivity extends Activity {
                 if(timeSlot.getSlot1() < 20)
                 {
                     // update count
-                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1() + 1, timeSlot.getSlot2(), timeSlot.getSlot3(), timeSlot.getSlot4());
+                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1() + 1, timeSlot.getSlot2(), timeSlot.getSlot3(), timeSlot.getSlot4(), timeSlot.getSlot1UID() + uid + " ", timeSlot.getSlot2UID(), timeSlot.getSlot3UID(), timeSlot.getSlot4UID());
                     databaseReference.child("Slots").setValue(updated_timeSlot);
 
                     Toast.makeText(ChooseSlotsActivity.this, "Slot1 (8:00 - 9:00) confirmed!", Toast.LENGTH_SHORT).show();
@@ -87,7 +87,7 @@ public class ChooseSlotsActivity extends Activity {
                 if(timeSlot.getSlot2() < 20)
                 {
                     // update count
-                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1(), timeSlot.getSlot2() + 1, timeSlot.getSlot3(), timeSlot.getSlot4());
+                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1(), timeSlot.getSlot2() + 1, timeSlot.getSlot3(), timeSlot.getSlot4(), timeSlot.getSlot1UID(), timeSlot.getSlot2UID() + uid + " ", timeSlot.getSlot3UID(), timeSlot.getSlot4UID());
                     databaseReference.child("Slots").setValue(updated_timeSlot);
 
                     Toast.makeText(ChooseSlotsActivity.this, "Slot2 (9:00 - 10:00) confirmed!", Toast.LENGTH_SHORT).show();
@@ -102,7 +102,7 @@ public class ChooseSlotsActivity extends Activity {
                 if(timeSlot.getSlot3() < 20)
                 {
                     // update count
-                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1(), timeSlot.getSlot2(), timeSlot.getSlot3() + 1, timeSlot.getSlot4());
+                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1(), timeSlot.getSlot2(), timeSlot.getSlot3() + 1, timeSlot.getSlot4(), timeSlot.getSlot1UID(), timeSlot.getSlot2UID(), timeSlot.getSlot3UID() + uid + " ", timeSlot.getSlot4UID());
                     databaseReference.child("Slots").setValue(updated_timeSlot);
 
                     Toast.makeText(ChooseSlotsActivity.this, "Slot3 (10:00 - 11:00) confirmed!", Toast.LENGTH_SHORT).show();
@@ -117,7 +117,7 @@ public class ChooseSlotsActivity extends Activity {
                 if(timeSlot.getSlot4() < 20)
                 {
                     // update count
-                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1(), timeSlot.getSlot2(), timeSlot.getSlot3(), timeSlot.getSlot4() + 1);
+                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1(), timeSlot.getSlot2(), timeSlot.getSlot3(), timeSlot.getSlot4() + 1, timeSlot.getSlot1UID(), timeSlot.getSlot2UID(), timeSlot.getSlot3UID(), timeSlot.getSlot4UID() + uid + " ");
                     databaseReference.child("Slots").setValue(updated_timeSlot);
 
                     Toast.makeText(ChooseSlotsActivity.this, "Slot4 (11:00 - 12:00) confirmed!", Toast.LENGTH_SHORT).show();
