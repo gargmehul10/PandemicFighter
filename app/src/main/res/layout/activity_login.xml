@@ -42,14 +42,14 @@
             android:ems="10"
             android:id="@+id/editTextAadhar"
             android:textSize="20sp"
-            android:inputType="text"
+            android:inputType="number"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/types"
+            android:entries="@array/typesLogin"
             android:id="@+id/typesLogin"
             />
 

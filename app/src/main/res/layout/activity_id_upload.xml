@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@color/background"
+    tools:context=".Module1.UploadIdActivity">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
+        android:focusable="true" >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter current address"
+            android:ems="10"
+            android:id="@+id/editText6"
+            android:textSize="20sp"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout >
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
+        android:focusable="true" >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter state"
+            android:ems="10"
+            android:id="@+id/state"
+            android:textSize="20sp"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout >
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
+        android:focusable="true" >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter district"
+            android:ems="10"
+            android:id="@+id/district"
+            android:textSize="20sp"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout >
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:id="@+id/imageView"
+            android:src="@mipmap/ic_launcher_round" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/choose_image"
+                android:id="@+id/button2" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="219dp"
+                android:src="@drawable/upload_image"
+                android:id="@+id/button4" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+<!--    <at.markushi.ui.CircleButton-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_width="80dip"-->
+<!--        android:layout_height="80dip"-->
+<!--        android:src="@drawable/success"-->
+<!--        android:gravity="center"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:onClick="createAndShare"-->
+<!--        android:id="@+id/goBack"-->
+<!--        app:cb_color="@color/colorPrimary"-->
+<!--        app:cb_pressedRingWidth="8dip" />-->
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="383dp"
+        android:layout_height="13dp"
+        app:layout_constraintBottom_toTopOf="@+id/editText6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+</LinearLayout>

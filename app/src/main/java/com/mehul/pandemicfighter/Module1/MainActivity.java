@@ -47,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.startActivity(mainIntent);
                         MainActivity.this.finish();
                     }
+                    else if(details.get("role").equals("admin")){
+                        Intent mainIntent = new Intent(MainActivity.this, AdminActivity.class);
+                        MainActivity.this.startActivity(mainIntent);
+                        MainActivity.this.finish();
+                    }
                     else{
                         Intent mainIntent = new Intent(MainActivity.this, ngoActivity.class);
                         MainActivity.this.startActivity(mainIntent);

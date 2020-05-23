@@ -1,24 +1,17 @@
 package com.mehul.pandemicfighter.Module1;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -37,22 +30,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.mehul.pandemicfighter.Module2.MapsMarkShop;
 import com.mehul.pandemicfighter.Module3.User;
 import com.mehul.pandemicfighter.R;
-
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -85,7 +67,7 @@ public class UserRegisterActivity extends FragmentActivity implements OnMapReady
 		editRange=findViewById(R.id.editRange);
 		types = findViewById(R.id.types);
         types.setOnItemSelectedListener(this);
-		btnGoBack=findViewById(R.id.btnGoBack);
+//		btnGoBack=findViewById(R.id.btnGoBack);
 		btnSignup=findViewById(R.id.btnSignup);
 
 		nameLay=findViewById(R.id.name_text_input1);
@@ -174,17 +156,38 @@ public class UserRegisterActivity extends FragmentActivity implements OnMapReady
 			}
 		});
 
-		btnGoBack.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
+//		btnGoBack.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				finish();
+//			}
+//		});
 
 		btnSignup.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				checkInputs();
+				new SweetAlertDialog(UserRegisterActivity.this, SweetAlertDialog.WARNING_TYPE)
+						.setTitleText("Aadhaar Verification")
+						.setContentText("Do you currently live at address on Aadhaar?")
+						.setConfirmText("Yes")
+						.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+							@Override
+							public void onClick(SweetAlertDialog sDialog) {
+								checkInputs();
+								sDialog.dismissWithAnimation();
+							}
+						})
+						.setCancelText("No")
+						.showCancelButton(true)
+						.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+							@Override
+							public void onClick(SweetAlertDialog sDialog) {
+								// take another address proof
+								checkInputs1();
+								sDialog.cancel();
+							}
+						})
+						.show();
 			}
 		});
 
@@ -225,6 +228,43 @@ public class UserRegisterActivity extends FragmentActivity implements OnMapReady
         Intent intent = new Intent(UserRegisterActivity.this, ScanDetails.class);
         intent.putExtra("Module3.User", newUser);
         startActivity(intent);
+	}
+
+	private void checkInputs1() {
+		String name,mobNo,add,pass,repPass,type;
+		Double range;
+		name=editName.getText().toString();
+		mobNo=editMob.getText().toString().trim();
+		add=editAadhar.getText().toString().trim();
+		range=Double.parseDouble(editRange.getText().toString());
+		type = types.getSelectedItem().toString();
+		if(name.isEmpty())
+		{
+			nameLay.setError("Enter valid name");
+			editName.requestFocus();
+			return;
+		}
+		if(mobNo.isEmpty()) {
+			mobLay.setError("Enter valid email");
+			editMob.requestFocus();
+			return;
+		}
+		if(add.isEmpty())
+		{
+			addLay.setError("Enter valid address");
+			editAadhar.requestFocus();
+			return;
+		}
+
+		if(latLng.equals(new LatLng(25.494635, 81.867338))) {
+			Toast.makeText(this,"Please select starting location!", Toast.LENGTH_LONG).show();
+			return;
+		}
+
+		User newUser = new User(name,add,mobNo,type,latLng.latitude,latLng.longitude, range);
+		Intent intent = new Intent(UserRegisterActivity.this, UploadIdActivity.class);
+		intent.putExtra("Module3.UserDetails", newUser);
+		startActivity(intent);
 	}
 
 	private void getDeviceLocation() {

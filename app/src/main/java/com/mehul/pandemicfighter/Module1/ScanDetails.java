@@ -13,8 +13,11 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.Result;
 import com.mehul.pandemicfighter.Module3.User;
 import com.mehul.pandemicfighter.R;
@@ -26,6 +29,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import java.io.StringReader;
+import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -92,6 +96,29 @@ public class ScanDetails extends Activity {
                                 //add user to firebase
                                 databaseReference.child("Users").child(scannedState).child(scannedDistrict).child(scannedAadhar).setValue(user);
                                 Toast.makeText(ScanDetails.this, "User verified !!",Toast.LENGTH_LONG).show();
+
+                                // for first user in an district create an admin
+                                DatabaseReference adminRef = FirebaseDatabase.getInstance().getReference().child("Users").child(scannedState).child(scannedDistrict);
+                                adminRef.child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        if (snapshot.getValue() == null) {
+                                            // Admin doesn't exist so create one
+
+                                            DatabaseReference newAdminRef = FirebaseDatabase.getInstance().getReference().child("Users").child(scannedState).child(scannedDistrict);
+                                            // create a random 6 digit secret key to be shared with admin
+                                            Random rnd = new Random();
+                                            int key = rnd.nextInt(999999);
+                                            newAdminRef.child("admin").child("key").setValue(String.format("%06d", key));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
                                 startActivity(new Intent(ScanDetails.this, LoginActivity.class));
                             }
                         }
