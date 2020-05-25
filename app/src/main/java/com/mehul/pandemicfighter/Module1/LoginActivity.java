@@ -2,6 +2,7 @@ package com.mehul.pandemicfighter.Module1;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mehul.pandemicfighter.Module2.ConsumerActivity;
 import com.mehul.pandemicfighter.Module2.RetailerActivity;
 import com.mehul.pandemicfighter.Module2.ngoActivity;
+import com.mehul.pandemicfighter.Module3.User;
 import com.mehul.pandemicfighter.R;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -82,35 +84,99 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
         String state = stateinput.getText().toString().trim().toLowerCase();
         String number = aadhar.getText().toString().trim();
         String role = types.getSelectedItem().toString().trim().toLowerCase();
-        databaseUser.child(state).child(dis).child(number).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    SessionManager sessionManager = new SessionManager(getApplicationContext());
-                    sessionManager.createLoginSession(number, role, state, dis);
-                    if(role.equals("retailer")){
-                        startActivity(new Intent(LoginActivity.this, RetailerActivity.class));
-                        finish();
-                    }
-                    else if(role.equals("consumer")){
-                        startActivity(new Intent(LoginActivity.this, ConsumerActivity.class));
-                        finish();
+
+        if(role.equals("admin")){
+            SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Logging");
+            pDialog.setCancelable(false);
+            pDialog.show();
+            databaseUser.child(state).child(dis).child("admin").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        // admin exists
+                        DatabaseReference newDatabaseUser = FirebaseDatabase.getInstance().getReference().child("Users").child(state).child(dis);
+                        newDatabaseUser.child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+
+                                for(DataSnapshot dataSnapshot2 : dataSnapshot1.getChildren()){
+                                    String key = dataSnapshot2.getValue(String.class);
+
+                                    if(key.equals(number)){
+                                        pDialog.cancel();
+                                        SessionManager sessionManager = new SessionManager(getApplicationContext());
+                                        sessionManager.createLoginSession(number, role, state, dis);
+
+                                        startActivity(new Intent(LoginActivity.this, AdminActivity.class));
+                                        finish();
+                                    }
+                                    else{
+                                        pDialog.cancel();
+                                        Toast.makeText(LoginActivity.this, "Admin passkey invalid!", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    // iterating loop only once since we only want key from admin
+                                    break;
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                     else{
-                        startActivity(new Intent(LoginActivity.this, ngoActivity.class));
-                        finish();
+                        pDialog.cancel();
+                        Toast.makeText(LoginActivity.this, "Admin not registered!", Toast.LENGTH_LONG).show();
                     }
                 }
-                else{
-                    Toast.makeText(LoginActivity.this, "Please register before login!",Toast.LENGTH_LONG).show();
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
                 }
-            }
+            });
+        }
+        else {
+            databaseUser.child(state).child(dis).child(number).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // check if address contains -9999
+                        String address = dataSnapshot.getValue(User.class).getAddress();
+                        if (address.substring(0, 5).equals("-9999")) {
+                            new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Admin verification still pending!")
+                                    .show();
+                        } else {
+                            SessionManager sessionManager = new SessionManager(getApplicationContext());
+                            sessionManager.createLoginSession(number, role, state, dis);
+                            if (role.equals("retailer")) {
+                                startActivity(new Intent(LoginActivity.this, RetailerActivity.class));
+                                finish();
+                            } else if (role.equals("consumer")) {
+                                startActivity(new Intent(LoginActivity.this, ConsumerActivity.class));
+                                finish();
+                            } else {
+                                startActivity(new Intent(LoginActivity.this, ngoActivity.class));
+                                finish();
+                            }
+                        }
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Please register before login!", Toast.LENGTH_LONG).show();
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     @Override

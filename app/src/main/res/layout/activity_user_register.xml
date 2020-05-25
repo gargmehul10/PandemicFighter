@@ -61,7 +61,7 @@
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:hint="Aadhar Number"
-            android:inputType="text" />
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -87,7 +87,7 @@
         android:id="@+id/types"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:entries="@array/types"
+        android:entries="@array/typesSignUp"
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -112,9 +112,9 @@
 
     <Button
         android:id="@+id/btnSignup"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="Proceed to Verification"
         android:background="@drawable/rounded_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -123,18 +123,17 @@
         app:layout_constraintTop_toBottomOf="@id/types"
         app:layout_constraintVertical_bias="0.98" />
 
-    <Button
-        android:id="@+id/btnGoBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go Back"
-        android:background="@drawable/rounded_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.205"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/types"
-        app:layout_constraintVertical_bias="0.98" />
-
+<!--    <Button-->
+<!--        android:id="@+id/btnGoBack"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Go Back"-->
+<!--        android:background="@drawable/rounded_button"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.205"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/types"-->
+<!--        app:layout_constraintVertical_bias="0.98" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

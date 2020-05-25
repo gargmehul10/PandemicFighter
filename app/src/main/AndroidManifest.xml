@@ -44,6 +44,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Module2.ChooseSlotsActivity"></activity>
+        <activity android:name=".Module1.UploadIdActivity"></activity>
+        <activity android:name=".Module1.AdminActivity"></activity>
         <activity
             android:name=".Module1.LoginActivity"
             android:screenOrientation="fullSensor" />

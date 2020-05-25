@@ -15,9 +15,15 @@
     <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
     <string name="title_activity_driver_register">Map</string>
     <string name="sign_up">Sign Up</string>
-    <string-array name="types">
+    <string-array name="typesSignUp">
         <item>Retailer</item>
         <item>NGO</item>
         <item>Consumer</item>
+    </string-array>
+    <string-array name="typesLogin">
+        <item>Retailer</item>
+        <item>NGO</item>
+        <item>Consumer</item>
+        <item>Admin</item>
     </string-array>
 </resources>
