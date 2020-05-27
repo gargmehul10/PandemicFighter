@@ -23,6 +23,7 @@ public class ChooseSlotsActivity extends Activity {
     private RadioButton radioButton1, radioButton2, radioButton3, radioButton4;
     private Button okButton;
     private TimeSlot timeSlot;
+    private String uid_retailer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class ChooseSlotsActivity extends Activity {
         // fetching details from the current shop
         SessionManager sessionManager = new SessionManager(getApplicationContext());
         HashMap<String, String> details = sessionManager.getUserDetails();
-        String uid_retailer = getIntent().getStringExtra("UID");
+        uid_retailer = getIntent().getStringExtra("UID");
         String uid = details.get("Aadhar");
         String state = details.get("state");
         String district = details.get("district");
@@ -67,68 +68,16 @@ public class ChooseSlotsActivity extends Activity {
             Toast.makeText(ChooseSlotsActivity.this, selectedRadioButton.getText(), Toast.LENGTH_SHORT).show();
 
             int slot_id = selectedRadioButton.getText().charAt(4) - '0';
-            if(slot_id == 1)
-            {
-                if(timeSlot.getSlot1() < 20)
-                {
-                    // update count
-                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1() + 1, timeSlot.getSlot2(), timeSlot.getSlot3(), timeSlot.getSlot4(), timeSlot.getSlot1UID() + uid + " ", timeSlot.getSlot2UID(), timeSlot.getSlot3UID(), timeSlot.getSlot4UID());
-                    databaseReference.child("Slots").setValue(updated_timeSlot);
-
-                    Toast.makeText(ChooseSlotsActivity.this, "Slot1 (8:00 - 9:00) confirmed!", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(ChooseSlotsActivity.this, "Slot full. Try again!", Toast.LENGTH_SHORT).show();
-                }
-            }
-            else if(slot_id == 2)
-            {
-                if(timeSlot.getSlot2() < 20)
-                {
-                    // update count
-                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1(), timeSlot.getSlot2() + 1, timeSlot.getSlot3(), timeSlot.getSlot4(), timeSlot.getSlot1UID(), timeSlot.getSlot2UID() + uid + " ", timeSlot.getSlot3UID(), timeSlot.getSlot4UID());
-                    databaseReference.child("Slots").setValue(updated_timeSlot);
-
-                    Toast.makeText(ChooseSlotsActivity.this, "Slot2 (9:00 - 10:00) confirmed!", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(ChooseSlotsActivity.this, "Slot full. Try again!", Toast.LENGTH_SHORT).show();
-                }
-            }
-            else if(slot_id == 3)
-            {
-                if(timeSlot.getSlot3() < 20)
-                {
-                    // update count
-                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1(), timeSlot.getSlot2(), timeSlot.getSlot3() + 1, timeSlot.getSlot4(), timeSlot.getSlot1UID(), timeSlot.getSlot2UID(), timeSlot.getSlot3UID() + uid + " ", timeSlot.getSlot4UID());
-                    databaseReference.child("Slots").setValue(updated_timeSlot);
-
-                    Toast.makeText(ChooseSlotsActivity.this, "Slot3 (10:00 - 11:00) confirmed!", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(ChooseSlotsActivity.this, "Slot full. Try again!", Toast.LENGTH_SHORT).show();
-                }
-            }
-            else if(slot_id == 4)
-            {
-                if(timeSlot.getSlot4() < 20)
-                {
-                    // update count
-                    TimeSlot updated_timeSlot = new TimeSlot(timeSlot.getSlot1(), timeSlot.getSlot2(), timeSlot.getSlot3(), timeSlot.getSlot4() + 1, timeSlot.getSlot1UID(), timeSlot.getSlot2UID(), timeSlot.getSlot3UID(), timeSlot.getSlot4UID() + uid + " ");
-                    databaseReference.child("Slots").setValue(updated_timeSlot);
-
-                    Toast.makeText(ChooseSlotsActivity.this, "Slot4 (11:00 - 12:00) confirmed!", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(ChooseSlotsActivity.this, "Slot full. Try again!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
+            move_to_next_Activity(slot_id,timeSlot);
             // go back to previous activity
         });
+    }
+
+    void move_to_next_Activity(int slot_id, TimeSlot ts){
+        Intent i = new Intent(ChooseSlotsActivity.this,CreateItemList.class);
+        i.putExtra("slotId", slot_id);
+        i.putExtra("timeslot",ts);
+        i.putExtra("UID_retailer",uid_retailer);
+        startActivity(i);
     }
 }

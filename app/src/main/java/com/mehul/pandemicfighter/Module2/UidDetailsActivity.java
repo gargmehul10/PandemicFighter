@@ -72,7 +72,7 @@ public class UidDetailsActivity extends AppCompatActivity {
                     list_aadhaarNumber.add(currUser.getAadharNumber());
                     list_name.add(currUser.getName());
 
-                    mAdapter=new UidDetailsAdapter(getApplicationContext(), list_name, list_aadhaarNumber, UidDetailsActivity.this);
+                    mAdapter=new UidDetailsAdapter(getApplicationContext(), list_name, list_aadhaarNumber, UidDetailsActivity.this, state, district);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     mRecyclerView.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
@@ -119,7 +119,7 @@ public class UidDetailsActivity extends AppCompatActivity {
                     list_aadhaarNumber.add(currUser.getAadharNumber());
                     list_name.add(currUser.getName());
 
-                    mAdapter=new UidDetailsAdapter(getApplicationContext(), list_name, list_aadhaarNumber, UidDetailsActivity.this);
+                    mAdapter=new UidDetailsAdapter(getApplicationContext(), list_name, list_aadhaarNumber, UidDetailsActivity.this, state, district);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     mRecyclerView.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();

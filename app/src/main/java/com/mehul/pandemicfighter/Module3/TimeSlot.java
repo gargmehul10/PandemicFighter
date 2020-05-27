@@ -1,6 +1,9 @@
 package com.mehul.pandemicfighter.Module3;
 
-public class TimeSlot {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class TimeSlot implements Parcelable {
     private int slot1, slot2, slot3, slot4;
     private String slot1UID, slot2UID, slot3UID, slot4UID;
 
@@ -20,6 +23,16 @@ public class TimeSlot {
         this.slot4UID = slot4UID;
     }
 
+    public TimeSlot(Parcel in) {
+        this.slot1 = in.readInt();
+        this.slot2 = in.readInt();
+        this.slot3 = in.readInt();
+        this.slot4 = in.readInt();
+        this.slot1UID = in.readString();
+        this.slot2UID = in.readString();
+        this.slot3UID = in.readString();
+        this.slot4UID = in.readString();
+    }
     public int getSlot1() {
         return slot1;
     }
@@ -83,4 +96,32 @@ public class TimeSlot {
     public void setSlot4UID(String slot4UID) {
         this.slot4UID = slot4UID;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(slot1);
+        parcel.writeInt(slot2);
+        parcel.writeInt(slot3);
+        parcel.writeInt(slot4);
+        parcel.writeString(slot1UID);
+        parcel.writeString(slot2UID);
+        parcel.writeString(slot3UID);
+        parcel.writeString(slot4UID);
+    }
+
+    public static final Parcelable.Creator<TimeSlot> CREATOR = new Parcelable.Creator<TimeSlot>() {
+
+        public TimeSlot createFromParcel(Parcel in) {
+            return new TimeSlot(in);
+        }
+
+        public TimeSlot[] newArray(int size) {
+            return new TimeSlot[size];
+        }
+    };
 }
