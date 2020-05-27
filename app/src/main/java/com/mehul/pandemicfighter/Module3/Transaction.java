@@ -2,20 +2,28 @@ package com.mehul.pandemicfighter.Module3;
 
 public class Transaction {
     private String timestamp;
-    private int rice, pulses, flour, cookingOil, spices;
-
+    private double rice, wheatFlour, cookingOil, sugar;
+    private boolean complete;
     public Transaction()
     {
 
     }
 
-    public Transaction(String timestamp, int rice, int pulses, int flour, int cookingOil, int spices) {
+    public boolean isComplete() {
+        return complete;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
+
+    public Transaction(String timestamp, double rice, double wheatFlour, double cookingOil, double sugar) {
         this.timestamp = timestamp;
         this.rice = rice;
-        this.pulses = pulses;
-        this.flour = flour;
+        this.wheatFlour = wheatFlour;
         this.cookingOil = cookingOil;
-        this.spices = spices;
+        this.sugar = sugar;
+        this.complete = false;
     }
 
     public String getTimestamp() {
@@ -26,43 +34,35 @@ public class Transaction {
         this.timestamp = timestamp;
     }
 
-    public int getRice() {
+    public double getRice() {
         return rice;
     }
 
-    public void setRice(int rice) {
+    public void setRice(double rice) {
         this.rice = rice;
     }
 
-    public int getPulses() {
-        return pulses;
+    public double getFlour() {
+        return wheatFlour;
     }
 
-    public void setPulses(int pulses) {
-        this.pulses = pulses;
+    public void setFlour(double wheatFlour) {
+        this.wheatFlour = wheatFlour;
     }
 
-    public int getFlour() {
-        return flour;
-    }
-
-    public void setFlour(int flour) {
-        this.flour = flour;
-    }
-
-    public int getCookingOil() {
+    public double getCookingOil() {
         return cookingOil;
     }
 
-    public void setCookingOil(int cookingOil) {
+    public void setCookingOil(double cookingOil) {
         this.cookingOil = cookingOil;
     }
 
-    public int getSpices() {
-        return spices;
+    public double getSugar() {
+        return sugar;
     }
 
-    public void setSpices(int spices) {
-        this.spices = spices;
+    public void setSugar(double sugar) {
+        this.sugar = sugar;
     }
 }

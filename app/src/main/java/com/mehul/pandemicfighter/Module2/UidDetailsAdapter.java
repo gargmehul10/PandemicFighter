@@ -23,6 +23,7 @@ import com.mehul.pandemicfighter.R;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -35,26 +36,28 @@ public class UidDetailsAdapter extends RecyclerView.Adapter<UidDetailsAdapter.My
     private ArrayList<String> list_name;
     private ArrayList<String> list_aadhaar_number;
     private Activity activity;
+    private String state,district;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView name, aadhaarNumber;
-        public ImageView infoButton, sellButton;
+        public ImageView sellButton;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
             aadhaarNumber = itemView.findViewById(R.id.aadhaar);
-            infoButton = itemView.findViewById(R.id.info_icon);
             sellButton = itemView.findViewById(R.id.sell_icon);
         }
     }
 
-    public UidDetailsAdapter(Context context, ArrayList<String> list_name, ArrayList<String> list_aadhaar_number, Activity activity)
+    public UidDetailsAdapter(Context context, ArrayList<String> list_name, ArrayList<String> list_aadhaar_number, Activity activity, String state, String district)
     {
         this.context = context;
         this.list_name = list_name;
         this.list_aadhaar_number = list_aadhaar_number;
         this.activity = activity;
+        this.state = state;
+        this.district = district;
     }
 
     @Override
@@ -70,130 +73,42 @@ public class UidDetailsAdapter extends RecyclerView.Adapter<UidDetailsAdapter.My
 
     @Override
     public void onBindViewHolder(final UidDetailsAdapter.MyViewHolder holder, final int position) {
-        final String currName = list_name.get(position);
-        final String currAadhaar = list_aadhaar_number.get(position);
-        holder.name.setText(String.valueOf(currName));
-        holder.aadhaarNumber.setText(String.valueOf(currAadhaar));
-        holder.infoButton.setOnClickListener(v -> {
-            Toast.makeText(activity, currName, Toast.LENGTH_LONG).show();
-
-            DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Transactions").child(currAadhaar);
-            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Transaction lastTransaction = dataSnapshot.getValue(Transaction.class);
-                    if(lastTransaction == null)
-                    {
-                        // Toast.makeText(activity, "Hello", Toast.LENGTH_LONG).show();
-                        new SweetAlertDialog(activity, SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("No transaction done yet!")
-                                .show();
-                    }
-                    else
-                    {
-                        String body =  "\nItems purchased: ";
-                        if(lastTransaction.getRice() > 0)
-                            body = body + "Rice, ";
-                        if(lastTransaction.getPulses() > 0)
-                            body = body + "Pulses, ";
-                        if(lastTransaction.getFlour() > 0)
-                            body = body + "Flour, ";
-                        if(lastTransaction.getCookingOil() > 0)
-                            body = body + "Cooking Oil, ";
-                        if(lastTransaction.getSpices() > 0)
-                            body = body + "Spices, ";
-                         int pos = body.lastIndexOf(',');
-                         body = body.substring(0, pos) + ".\n";
-
-                        new SweetAlertDialog(activity)
-                                .setTitleText("Last Transaction: " + lastTransaction.getTimestamp())
-                                .setContentText(body)
-                                .show();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-        });
+        final String currName = list_name.get(position).trim();
+        final String currAadhaar = list_aadhaar_number.get(position).trim();
+        holder.name.setText(currName);
+        holder.aadhaarNumber.setText(currAadhaar);
         holder.sellButton.setOnClickListener(v -> {
 
-            DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference().child("Transactions").child(currAadhaar);
+            DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference().child("Users").child(state).child(district).child("Transactions").child(currAadhaar);
             myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Transaction lastTransaction1 = dataSnapshot.getValue(Transaction.class);
-                    int flag = 0;
+                    Toast.makeText(context,"Sell!!",Toast.LENGTH_SHORT).show();
                     if(lastTransaction1 != null)
-                    {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-                        Date firstDate = null;
-                        try {
-                            firstDate = sdf.parse(lastTransaction1.getTimestamp());
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        Date secondDate = null;
-                        try {
-                            secondDate = sdf.parse(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date()));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        long diffInMillies = Math.abs(secondDate.getTime() - firstDate.getTime());
-                        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-                        if(diff >= 7.0)
-                        {
-                            flag = 1;
-                        }
-                        else
-                        {
-                            new SweetAlertDialog(activity, SweetAlertDialog.WARNING_TYPE)
-                                    .setTitleText("Do not sell !")
-                                    .setContentText(currName + " made last transaction " + (int)diff + " days earlier.")
-                                    .show();
-                        }
-                    }
-                    if(lastTransaction1 == null || flag == 1)
                     {
                         // Set up the alert builder
                         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                        builder.setTitle("Choose items purchased: ");
+                        String[] items = {"Rice"+"("+lastTransaction1.getRice()+") Kg/Lt", "Flour"+"("+lastTransaction1.getFlour()+") Kg/Lt", "Cooking Oil"+"("+lastTransaction1.getCookingOil()+") Kg/Lt", "Sugar"+"("+lastTransaction1.getSugar()+") Kg/Lt"};
+                        builder.setTitle("List of Items")
 
-                        // Add a checkbox list
-                        String[] animals = {"Rice", "Pulses", "Flour", "Cooking Oil", "Spices"};
-                        boolean[] checkedItems = {false, false, false, false, false};
-                        builder.setMultiChoiceItems(animals, checkedItems, (dialog, which, isChecked) -> {
-                            // The user checked or unchecked a box
-                            // Toast.makeText(activity, "" + which + " " + isChecked, Toast.LENGTH_SHORT).show();
-                            checkedItems[which] = isChecked;
-                        });
+                                .setItems(items, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(context, items[which] + " is clicked", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
 
                         // Add OK and Cancel buttons
-                        builder.setPositiveButton("OK", (dialog, which) -> {
+                        builder.setPositiveButton("Sell", (dialog, which) -> {
                             // The user clicked OK
-                            String date = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
-                            Transaction newTransaction = new Transaction(date, 0, 0, 0, 0, 0);
-                            if(checkedItems[0] == true)
-                                newTransaction.setRice(1);
-                            if(checkedItems[1] == true)
-                                newTransaction.setPulses(1);
-                            if(checkedItems[2] == true)
-                                newTransaction.setFlour(1);
-                            if(checkedItems[3] == true)
-                                newTransaction.setCookingOil(1);
-                            if(checkedItems[4] == true)
-                                newTransaction.setSpices(1);
-
-                            DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Transactions").child(currAadhaar);
-                            myRef.setValue(newTransaction);
+                            lastTransaction1.setComplete(true);
+                            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                            String currDate = df.format(Calendar.getInstance().getTime());
+                            lastTransaction1.setTimestamp(currDate);
+                            myRef1.setValue(lastTransaction1);
 
                             new SweetAlertDialog(activity, SweetAlertDialog.SUCCESS_TYPE)
-                                    .setTitleText("Items purchased !!")
+                                    .setTitleText("Items Sold!!")
                                     .show();
                         });
                         builder.setNegativeButton("Cancel", null);
@@ -201,6 +116,9 @@ public class UidDetailsAdapter extends RecyclerView.Adapter<UidDetailsAdapter.My
                         // Create and show the alert dialog
                         AlertDialog dialog = builder.create();
                         dialog.show();
+                    }
+                    else{
+                        Toast.makeText(context,"no transaction",Toast.LENGTH_SHORT).show();
                     }
                 }
 

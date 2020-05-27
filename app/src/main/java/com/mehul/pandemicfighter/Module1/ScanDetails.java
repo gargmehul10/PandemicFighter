@@ -98,7 +98,7 @@ public class ScanDetails extends Activity {
                                 Toast.makeText(ScanDetails.this, "User verified !!",Toast.LENGTH_LONG).show();
 
                                 // for first user in an district create an admin
-                                DatabaseReference adminRef = FirebaseDatabase.getInstance().getReference().child("Users").child(scannedState).child(scannedDistrict);
+                                /*DatabaseReference adminRef = FirebaseDatabase.getInstance().getReference().child("Users").child(scannedState).child(scannedDistrict);
                                 adminRef.child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot snapshot) {
@@ -117,7 +117,7 @@ public class ScanDetails extends Activity {
                                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                                     }
-                                });
+                                });*/
 
                                 startActivity(new Intent(ScanDetails.this, LoginActivity.class));
                             }

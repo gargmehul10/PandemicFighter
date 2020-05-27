@@ -184,11 +184,7 @@ public class ngoActivity extends AppCompatActivity implements OnMapReadyCallback
             mapboxMap.setOnInfoWindowClickListener(marker -> {
                 if(marker.getTitle().substring(marker.getTitle().indexOf(' ')+1).equals("shop Here"));
                 {
-                    String UIDRetailer = marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")+1);
-                    Toast.makeText(ngoActivity.this, UIDRetailer,Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(ngoActivity.this, ChooseSlotsActivity.class);
-                    i.putExtra("UID", UIDRetailer);
-                    startActivity(i);
+                    ////////////////////////////////////////////
                 }
                 return false;
             });

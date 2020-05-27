@@ -27,7 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".Module2.ngoActivity"></activity>
+        <activity android:name=".Module2.CreateItemList"></activity>
+        <activity android:name=".Module2.ngoActivity" />
         <activity android:name=".Module2.UploadActivity" />
         <activity android:name=".Module2.MapsMarkShop" />
         <activity android:name=".Module2.ConsumerActivity" />
@@ -43,9 +44,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Module2.ChooseSlotsActivity"></activity>
-        <activity android:name=".Module1.UploadIdActivity"></activity>
-        <activity android:name=".Module1.AdminActivity"></activity>
+        <activity android:name=".Module2.ChooseSlotsActivity" />
+        <activity android:name=".Module1.UploadIdActivity" />
+        <activity android:name=".Module1.AdminActivity" />
         <activity
             android:name=".Module1.LoginActivity"
             android:screenOrientation="fullSensor" />
